@@ -1,6 +1,13 @@
+import { useState } from "react";
 import closeBtn from "../img/cerrar.svg";
+import Message from "./Message";
 
-const Modal = ({ setModal, animateModal, setAnimateModal }) => {
+const Modal = ({ setModal, animateModal, setAnimateModal, SaveExpense }) => {
+  const [name, setName] = useState("");
+  const [quality, setQuality] = useState("");
+  const [category, setCategory] = useState("");
+  const [message, setMessage] = useState("");
+
   const hideModal = () => {
     setAnimateModal(false);
 
@@ -9,14 +16,33 @@ const Modal = ({ setModal, animateModal, setAnimateModal }) => {
     }, 500);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if ([name, quality, category].includes("")) {
+      setMessage("Todos los campos son obligatorios");
+
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
+      return;
+    }
+
+    SaveExpense({ name, quality, category });
+  };
+
   return (
     <div className="modal">
       <div className="close-modal">
         <img src={closeBtn} alt="Cerrar modal" onClick={hideModal} />
       </div>
 
-      <form className={`form ${animateModal ? "animate" : "close"}`}>
-        <legend>Nuevo Gasto</legend>
+      <form
+        onSubmit={handleSubmit}
+        className={`form ${animateModal ? "animate" : "close"}`}
+      >
+        <legend>Nuevo del Gasto</legend>
+        {message && <Message type="error">{message} </Message>}
 
         <div className="field">
           <label htmlFor="nombre">Nombre Gasto</label>
@@ -25,6 +51,8 @@ const Modal = ({ setModal, animateModal, setAnimateModal }) => {
             id="nombre"
             type="text"
             placeholder="Añade el nombre del gasto"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
 
@@ -34,12 +62,19 @@ const Modal = ({ setModal, animateModal, setAnimateModal }) => {
             id="cantidad"
             type="number"
             placeholder="Añade la cantidad del gasto"
+            value={quality}
+            onChange={(e) => setQuality(Number(e.target.value))}
           />
         </div>
 
         <div className="field">
           <label htmlFor="categoria">Categoría</label>
-          <select name="" id="categoria">
+          <select
+            name=""
+            id="categoria"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
             <option value="">-- Seleccione --</option>
             <option value="ahorro">Ahorro</option>
             <option value="comida">Comida</option>
