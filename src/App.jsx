@@ -5,6 +5,7 @@ import IconNewExpense from "./img/nuevo-gasto.svg";
 import Modal from "./components/Modal";
 import { generateId } from "./utils/GenerateId";
 import ListExpenses from "./components/ListExpenses";
+import Filters from "./components/Filters";
 
 function App() {
   const [budget, setBudget] = useState(
@@ -21,6 +22,9 @@ function App() {
 
   const [expenseEdit, setExpenseEdit] = useState({});
 
+  const [filter, setFilter] = useState("");
+  const [expensesFilters, setExpensesFilters] = useState([]);
+
   useEffect(() => {
     if (Object.keys(expenseEdit).length > 0) {
       setModal(true);
@@ -34,6 +38,16 @@ function App() {
   useEffect(() => {
     localStorage.setItem("budget", budget ?? 0);
   }, [budget]);
+
+  useEffect(() => {
+    if (filter) {
+      //Filtrar gastos por categoría
+      const expensesFilters = expenses.filter(
+        (expense) => expense.category === filter
+      );
+      setExpensesFilters(expensesFilters);
+    }
+  }, [filter]);
 
   useEffect(() => {
     localStorage.setItem("expenses", JSON.stringify(expenses) ?? []);
@@ -95,10 +109,13 @@ function App() {
       {isValidBudget && (
         <>
           <main>
+            <Filters filter={filter} setFilter={setFilter} />
             <ListExpenses
               expenses={expenses}
               setExpenseEdit={setExpenseEdit}
               deleteExpense={deleteExpense}
+              filter={filter}
+              expensesFilters={expensesFilters}
             />
           </main>
           <div className="new-expense">
