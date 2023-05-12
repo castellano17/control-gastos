@@ -207,7 +207,7 @@ header h1 {
 }
 .conten-budget p.negativo,
 .conten-budget p.negativo span {
-  color: red;
+  color: #dc2626;
 }
 .conten-budget span {
   font-weight: 900;
@@ -350,6 +350,8 @@ main {
 }
 .modal .close-modal img {
   width: 100%;
+  position: relative;
+  z-index: 100;
 }
 
 .modal .form {
