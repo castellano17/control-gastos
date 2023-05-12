@@ -28,7 +28,7 @@ const objetIcons = {
   salud: IconSalud,
 };
 
-const Expense = ({ expense, setExpenseEdit }) => {
+const Expense = ({ expense, setExpenseEdit, deleteExpense }) => {
   const { category, name, quality, id, date } = expense;
 
   const leadingActions = () => (
@@ -39,7 +39,7 @@ const Expense = ({ expense, setExpenseEdit }) => {
 
   const trailingActions = () => (
     <TrailingActions>
-      <SwipeAction onClick={() => console.log("eliminando")}>
+      <SwipeAction onClick={() => deleteExpense(id)} destructive={true}>
         {" "}
         Eliminar
       </SwipeAction>

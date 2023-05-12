@@ -1,15 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import closeBtn from "../img/cerrar.svg";
 import Message from "./Message";
 
-const Modal = ({ setModal, animateModal, setAnimateModal, SaveExpense }) => {
+const Modal = ({
+  setModal,
+  animateModal,
+  setAnimateModal,
+  SaveExpense,
+  expenseEdit,
+  setExpenseEdit,
+}) => {
   const [name, setName] = useState("");
   const [quality, setQuality] = useState("");
   const [category, setCategory] = useState("");
   const [message, setMessage] = useState("");
+  const [id, setId] = useState("");
+  const [date, setDate] = useState("");
+
+  useEffect(() => {
+    if (Object.keys(expenseEdit).length > 0) {
+      setName(expenseEdit.name);
+      setQuality(expenseEdit.quality);
+      setCategory(expenseEdit.category);
+      setId(expenseEdit.id);
+      setDate(expenseEdit.date);
+    }
+  }, []);
 
   const hideModal = () => {
     setAnimateModal(false);
+    setExpenseEdit({});
 
     setTimeout(() => {
       setModal(false);
@@ -28,7 +48,7 @@ const Modal = ({ setModal, animateModal, setAnimateModal, SaveExpense }) => {
       return;
     }
 
-    SaveExpense({ name, quality, category });
+    SaveExpense({ name, quality, category, id, date });
   };
 
   return (
@@ -41,7 +61,7 @@ const Modal = ({ setModal, animateModal, setAnimateModal, SaveExpense }) => {
         onSubmit={handleSubmit}
         className={`form ${animateModal ? "animate" : "close"}`}
       >
-        <legend>Nuevo del Gasto</legend>
+        <legend>{expenseEdit.name ? "Editar Gasto" : "Nuevo Gasto"}</legend>
         {message && <Message type="error">{message} </Message>}
 
         <div className="field">
@@ -86,7 +106,10 @@ const Modal = ({ setModal, animateModal, setAnimateModal, SaveExpense }) => {
           </select>
         </div>
 
-        <input type="submit" value="Añadir Gasto" />
+        <input
+          type="submit"
+          value={expenseEdit.name ? "Guardar cambios" : "Añadir Gasto"}
+        />
       </form>
     </div>
   );
