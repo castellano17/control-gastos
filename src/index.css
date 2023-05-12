@@ -183,7 +183,7 @@ header h1 {
 }
 .form input[type="text"].new-budget,
 .form input[type="number"].new-budget {
-  font-size: 2.8rem;
+  font-size: 1.9rem;
   text-align: center;
 }
 
@@ -203,6 +203,9 @@ header h1 {
 @media (min-width: 768px) {
   .conten-budget p {
     text-align: left;
+  }
+  .form input[type="number"].new-budget {
+    font-size: 2.8rem;
   }
 }
 .conten-budget p.negativo,
